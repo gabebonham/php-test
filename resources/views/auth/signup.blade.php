@@ -7,10 +7,12 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="/register">
-        <input type="text" placeholder="name">
-        <input type="text" placeholder="email">
-        <input type="text" placeholder="pass">
+    <form action="/register" method="POST">
+        @csrf
+        <input name="name" type="text" placeholder="name">
+        <input name="email" type="text" placeholder="email">
+        <input name="pass" type="text" placeholder="pass">
+        <button type="submit"> asdfv</button>
     </form>
 </body>
 </html>

@@ -22,10 +22,14 @@
     <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
        @auth
        <p> auth </p>  
+       <form action="/logout" method="post">
+        @csrf
+        <button type="submit">logout</button>
+    </form>
        @else
        <p>not auth
 </p>
+<a href="/auth/signup">asdf</a>
         @endauth
-       @endauth
     </body>
 </html>
