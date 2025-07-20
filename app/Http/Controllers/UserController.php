@@ -19,7 +19,7 @@ class UserController extends Controller
         auth()->login($user);
         return redirect('/home');
     }
-    public function getAll():array{
-        return User::getAll();
+    public function getAll(){
+        return User::all();
     }
 }
