@@ -19,12 +19,14 @@
                     <td>
                         @if($bill->status == 'pago')
                             <span class="status-paid">Pago</span>
+                        @elseif($bill->status == 'expirado')
+                            <span class="status-exp">Expirado</span>
                         @else
                             <span class="status-pending">Pendente</span>
                         @endif
                     </td>
                     <td>
-                        @if($bill->status != 'pago')
+                        @if($bill->status == 'pendente')
                             <form action="/payed/{{ $bill->id }}" method="PUT">
                                 @csrf
                                 <input type="hidden" name="amount" value="{{ $bill->amount }}">

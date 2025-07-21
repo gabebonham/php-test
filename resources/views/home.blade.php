@@ -133,7 +133,16 @@
         text-align: center;
         display: inline-block;
     }
-
+    .status-exp {
+        color: #5f0906;
+        background-color: #fad1d1;
+        padding: 0.25rem 0.5rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-align: center;
+        display: inline-block;
+    }
     .status-pending {
         color: #92400e;
         background-color: #fef3c7;

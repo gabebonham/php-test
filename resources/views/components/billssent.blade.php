@@ -16,12 +16,14 @@
                   <td>{{ $bill->toUser->name }}</td>
                   <td>R$ {{ number_format($bill->amount, 2, ',', '.') }}</td>
                   <td>
-                      @if($bill->status == 'pago')
-                          <span class="status-paid">Pago</span>
-                      @else
-                          <span class="status-pending">Pendente</span>
-                      @endif
-                  </td>
+                        @if($bill->status == 'pago')
+                            <span class="status-paid">Pago</span>
+                        @elseif($bill->status == 'expirado')
+                            <span class="status-exp">Expirado</span>
+                        @else
+                            <span class="status-pending">Pendente</span>
+                        @endif
+                    </td>
               </tr>
           @endforeach
       </tbody>

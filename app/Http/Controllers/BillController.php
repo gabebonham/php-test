@@ -38,13 +38,25 @@ class BillController extends Controller
         
         return Bill::where('from', $userId)
                     ->with('fromUser')
-                    ->get();
+                    ->get()
+                    ->map(function($bill){
+                        if($bill->status=='pendente'&&isset($bill->exp) && \Carbon\Carbon::parse($bill->exp)->isPast()){
+                            $bill->status = 'expirado';
+                        }
+                        return $bill;
+                    });
     }
     public function getTo(){
         $userId = auth()->id();
-         return Bill::where('to', $userId)
+        return Bill::where('to', $userId)
                     ->with('toUser')
-               ->get();
+                    ->get()
+                    ->map(function($bill){
+                        if($bill->status=='pendente'&&isset($bill->exp) && \Carbon\Carbon::parse($bill->exp)->isPast()){
+                            $bill->status = 'expirado';
+                        }
+                        return $bill;
+                    });
     }
     public function update($id){
         $bill = Bill::find($id);
