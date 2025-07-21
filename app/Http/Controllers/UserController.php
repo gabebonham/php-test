@@ -23,7 +23,7 @@ class UserController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
  
-            return redirect()->intended('dashboard');
+            return redirect()->intended('home');
         }
  
         return back()->withErrors([
@@ -40,7 +40,8 @@ class UserController extends Controller
         return view('home');
     }
     public function getAll(){
-        return User::all();
+        $excludedId = Auth::id();
+        return User::where('id', '!=', $excludedId)->get();
     }
     public function getById($id){
         return User::find($id);

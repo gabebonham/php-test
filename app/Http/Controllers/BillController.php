@@ -24,7 +24,7 @@ class BillController extends Controller
             'to' => $request->from,
             'from' => $loggedUserId,
             'amount' => $request->amount,
-            'status' => 'pago',
+            'status' => 'pendente',
             'pixKey' => $uuidString,
             'exp' => $expiresAt,
         ]);
@@ -48,6 +48,8 @@ class BillController extends Controller
     }
     public function update($id){
         $bill = Bill::find($id);
+        $bill->status = 'pago';
+        $bill->save();
         $loggedUserId = $bill->to;
         $from = $bill->from;
         $amount = $bill->amount;
