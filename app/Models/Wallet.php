@@ -6,18 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
-class Notification extends Model
+class Wallet extends Model
 {
-    use HasFactory,HasUuids;
+    use HasUuids;
     
     public $incrementing = false;
     protected $keyType = 'string';
     
-    protected $fillable = [
-        'title',
-        'content',
-        'to',
-        'status',
-    ];
+    protected $fillable = ['owner', 'value'];
+    
+    
 
 }

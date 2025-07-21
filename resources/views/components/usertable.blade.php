@@ -2,7 +2,7 @@
   <div class="table-row header">
     <div class="table-cell ">Nome</div>
     <div class="table-cell">Email</div>
-    <div class="table-cell">Action</div>
+    <div class="table-cell">Ações</div>
   </div>
   
   @foreach ($users as $user)
@@ -10,10 +10,7 @@
     <div class="table-cell">{{ $user->name }}</div>
     <div class="table-cell">{{ $user->email }}</div>
     <div class="table-cell">
-        <form action="{{ route('bill', $user->id) }}" method="POST">
-      @csrf
-      <button type="submit" class="pix-button">Cobrar PIX</button>
-    </form>
+      <a href="/billing/{{ $user->id }}" class="pix-button">Cobrar PIX</a>
     </div>
   </div>
   @endforeach
