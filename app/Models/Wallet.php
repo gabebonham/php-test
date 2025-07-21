@@ -14,7 +14,5 @@ class Wallet extends Model
     protected $keyType = 'string';
     
     protected $fillable = ['owner', 'value'];
-    
-    
 
 }

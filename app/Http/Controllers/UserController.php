@@ -7,10 +7,18 @@ use App\Models\User;
 use App\Models\Wallet;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\RedirectResponse;
+use App\Services\UsersService;
+
 class UserController extends Controller
 {
+    protected $usersService;
+
+    public function __construct(UsersService $usersService)
+    {
+        $this->usersService = $usersService;
+    }
     public function logout(){
-        auth()->logout();
+        $this->usersService->logout();
         return view('home');
     }
     public function login(Request $request): RedirectResponse
@@ -20,8 +28,7 @@ class UserController extends Controller
             'password' => ['required'],
         ]);
  
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
+        if ($this->usersService->login($credentials['email'], $credentials['password'], $request)) {
  
             return redirect()->intended('home');
         }
@@ -31,19 +38,13 @@ class UserController extends Controller
         ])->onlyInput('email');
     }
     public function create(Request $request){
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-        Wallet::create(['owner'=>$user->id,'value'=>10.0]);
+        $this->usersService->create($request->name,$request->email, $request->password);
         return view('home');
     }
     public function getAll(){
-        $excludedId = Auth::id();
-        return User::where('id', '!=', $excludedId)->get();
+        return $this->usersService->getAll();
     }
     public function getById($id){
-        return User::find($id);
+        return $this->usersService->getById($id);
     }
 }

@@ -7,73 +7,29 @@ use Illuminate\Http\Request;
 use App\Models\Bill;
 use App\Models\Wallet;
 use Illuminate\Support\Carbon;
+use App\Services\BillsService;
+
 class BillController extends Controller
 {
-    protected $userController;
+    protected $billssService;
 
-    public function __construct(UserController $userController)
+    public function __construct(BillsService $billssService)
     {
-        $this->userController = $userController;
+        $this->billssService = $billssService;
     }
     public function create(Request $request){
-        $loggedUserId = auth()->id();
-        $uuid = Str::uuid(); 
-        $uuidString = Str::uuid()->toString(); 
-        $expiresAt = Carbon::now()->addMinute();
-        $bill = Bill::create([
-            'to' => $request->from,
-            'from' => $loggedUserId,
-            'amount' => $request->amount,
-            'status' => 'pendente',
-            'pixKey' => $uuidString,
-            'exp' => $expiresAt,
-        ]);
-        
-        
+        $this->billssService->create($request->from,$request->amount);
         return redirect('/home');
     }
     public function getOwned()
     {
-        $userId = auth()->id();
-        
-        return Bill::where('from', $userId)
-                    ->with('fromUser')
-                    ->get()
-                    ->map(function($bill){
-                        if($bill->status=='pendente'&&isset($bill->exp) && \Carbon\Carbon::parse($bill->exp)->isPast()){
-                            $bill->status = 'expirado';
-                        }
-                        return $bill;
-                    });
+        return $this->billssService->getOwned();
     }
     public function getTo(){
-        $userId = auth()->id();
-        return Bill::where('to', $userId)
-                    ->with('toUser')
-                    ->get()
-                    ->map(function($bill){
-                        if($bill->status=='pendente'&&isset($bill->exp) && \Carbon\Carbon::parse($bill->exp)->isPast()){
-                            $bill->status = 'expirado';
-                        }
-                        return $bill;
-                    });
+        return $this->billssService->getTo();
+
     }
     public function update($id){
-        $bill = Bill::find($id);
-        $bill->status = 'pago';
-        $bill->save();
-        $loggedUserId = $bill->to;
-        $from = $bill->from;
-        $amount = $bill->amount;
-        $loggedUserId = auth()->id();
-        $towallet = Wallet::where('owner', $loggedUserId)
-               ->first();
-        $towallet->value = $towallet->value-$amount;
-        $towallet->save(); 
-
-        $fromwallet = Wallet::where('owner', $from)
-               ->first();
-        $fromwallet->value = $fromwallet->value+$amount;
-        $fromwallet->save();
+        $this->billssService->update($id);
     }
 }
