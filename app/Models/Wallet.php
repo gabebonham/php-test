@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class Wallet extends Model
 {
-    use HasUuids;
+    use HasUuids,HasFactory;
     
     public $incrementing = false;
     protected $keyType = 'string';
